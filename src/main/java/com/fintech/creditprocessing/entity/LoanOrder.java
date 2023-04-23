@@ -3,15 +3,16 @@ package com.fintech.creditprocessing.entity;
 
 import com.fintech.creditprocessing.constant.Status;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Data
+@Accessors(chain = true)
 public class LoanOrder {
 
     private Long id;
-    private UUID orderId;
+    private String orderId;
     private Long userId;
     private Long tariffId;
     private Double creditRating;
