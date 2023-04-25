@@ -29,4 +29,10 @@ public class LoanServiceController {
         return ResponseEntity.ok(loanOrderService.createCreditApplication(loanOrderDTO));
     }
 
+    @GetMapping("/getStatusOrder")
+    public ResponseEntity<?> getStatusOrder(@RequestParam("orderId") String orderId) {
+        return ResponseEntity.ok(loanOrderService.getStatusOrder(orderId));
+    }
+
+
 }

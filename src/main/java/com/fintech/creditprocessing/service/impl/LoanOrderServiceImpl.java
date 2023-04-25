@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -56,5 +57,14 @@ public class LoanOrderServiceImpl implements LoanOrderService {
         loanOrderDAO.save(loanOrder);
 
         return loanOrder.getOrderId();
+    }
+
+    @Override
+    public Status getStatusOrder(String orderId) {
+
+        Optional<Status> statusOptional = Optional.ofNullable(loanOrderDAO.getStatusById(orderId));
+        if (statusOptional.isEmpty()) throw new CustomException("ORDER_NOT_FOUND", "Заявка не найдена");
+
+        return statusOptional.get();
     }
 }
