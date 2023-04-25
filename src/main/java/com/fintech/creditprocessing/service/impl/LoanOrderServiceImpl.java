@@ -1,11 +1,12 @@
 package com.fintech.creditprocessing.service.impl;
 
 
+import com.fintech.creditprocessing.constant.ErrorCode;
 import com.fintech.creditprocessing.constant.Status;
 import com.fintech.creditprocessing.dao.LoanOrderDAO;
 import com.fintech.creditprocessing.dto.LoanOrderDTO;
 import com.fintech.creditprocessing.entity.LoanOrder;
-import com.fintech.creditprocessing.exception.CustomException;
+import com.fintech.creditprocessing.exception.CommonException;
 import com.fintech.creditprocessing.service.LoanOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,11 +33,11 @@ public class LoanOrderServiceImpl implements LoanOrderService {
             if (order.getTariffId().equals(loanOrderDTO.tariffId())) {
 
                 switch (order.getStatus()) {
-                    case IN_PROGRESS -> throw new CustomException("LOAN_CONSIDERATION", "Заявка уже на рассмотрении");
-                    case APPROVED -> throw new CustomException("LOAN_ALREADY_APPROVED", "Заявка уже одобрена");
+                    case IN_PROGRESS -> throw new CommonException(ErrorCode.LOAN_CONSIDERATION, "Заявка уже на рассмотрении");
+                    case APPROVED -> throw new CommonException(ErrorCode.LOAN_ALREADY_APPROVED, "Заявка уже одобрена");
                     case REFUSED -> {
                         if (order.getTimeUpdate().compareTo(new Timestamp(System.currentTimeMillis())) < 120000) {
-                            throw new CustomException("TRY_LATER", "Прошло менее 2 минут");
+                            throw new CommonException(ErrorCode.TRY_LATER, "Прошло менее 2 минут");
                         }
                     }
                 }
@@ -63,7 +64,7 @@ public class LoanOrderServiceImpl implements LoanOrderService {
     public Status getStatusOrder(String orderId) {
 
         Optional<Status> statusOptional = Optional.ofNullable(loanOrderDAO.getStatusById(orderId));
-        if (statusOptional.isEmpty()) throw new CustomException("ORDER_NOT_FOUND", "Заявка не найдена");
+        if (statusOptional.isEmpty()) throw new CommonException(ErrorCode.ORDER_NOT_FOUND, "Заявка не найдена");
 
         return statusOptional.get();
     }

@@ -1,4 +1,6 @@
 package com.fintech.creditprocessing.exception;
 
 
-public record ErrorReport(String code, String message) {}
+import com.fintech.creditprocessing.constant.ErrorCode;
+
+public record ErrorReport(ErrorCode code, String message) {}
