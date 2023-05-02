@@ -6,6 +6,7 @@ import com.fintech.creditprocessing.service.LoanOrderService;
 import com.fintech.creditprocessing.service.TariffService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +35,9 @@ public class LoanServiceController {
         return ResponseEntity.ok(loanOrderService.getStatusOrder(orderId));
     }
 
-
+    @DeleteMapping("/deleteOrder")
+    public ResponseEntity<?> deleteOrder(@RequestBody LoanOrderDTO loanOrderDTO) {
+        loanOrderService.deleteOrder(loanOrderDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

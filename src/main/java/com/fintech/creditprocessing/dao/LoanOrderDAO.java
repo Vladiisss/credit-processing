@@ -2,6 +2,7 @@ package com.fintech.creditprocessing.dao;
 
 import com.fintech.creditprocessing.constant.Status;
 import com.fintech.creditprocessing.dao.mapper.StatusMapper;
+import com.fintech.creditprocessing.dto.LoanOrderDTO;
 import com.fintech.creditprocessing.entity.LoanOrder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ public class LoanOrderDAO {
             " credit_rating, status, time_insert, time_update) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_GET_ORDERS_BY_ID = "SELECT * FROM loan_order WHERE user_id=?";
     private static final String SQL_GET_STATUS_BY_ID = "SELECT status FROM loan_order WHERE order_id=?";
+    private static final String SQL_DELETE_ORDER_BY_ID  = "DELETE FROM loan_order WHERE order_id=?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -45,4 +47,9 @@ public class LoanOrderDAO {
             return null;
         }
     }
+
+    public void delete(String orderId) {
+        jdbcTemplate.update(SQL_DELETE_ORDER_BY_ID, orderId);
+    }
+
 }

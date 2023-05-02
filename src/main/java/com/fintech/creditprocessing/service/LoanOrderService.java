@@ -8,4 +8,6 @@ public interface LoanOrderService {
     String createCreditApplication(LoanOrderDTO loanOrderDTO);
 
     Status getStatusOrder(String orderId);
+
+    void deleteOrder(LoanOrderDTO loanOrderDTO);
 }

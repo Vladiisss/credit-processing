@@ -68,4 +68,16 @@ public class LoanOrderServiceImpl implements LoanOrderService {
 
         return statusOptional.get();
     }
+
+    @Override
+    public void deleteOrder(LoanOrderDTO loanOrderDTO) {
+
+        Optional<Status> statusOptional = Optional.ofNullable(loanOrderDAO.getStatusById(loanOrderDTO.orderId()));
+        if (statusOptional.isEmpty()) throw new CommonException(ErrorCode.ORDER_NOT_FOUND, "Заявка не найдена");
+
+        if (!statusOptional.get().equals(Status.IN_PROGRESS))
+            throw new CommonException(ErrorCode.ORDER_IMPOSSIBLE_TO_DELETE, "Невозможно удалить заявку");
+
+        loanOrderDAO.delete(loanOrderDTO.orderId());
+    }
 }
