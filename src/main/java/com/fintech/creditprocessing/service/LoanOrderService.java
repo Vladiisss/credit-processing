@@ -1,13 +1,14 @@
 package com.fintech.creditprocessing.service;
 
 import com.fintech.creditprocessing.constant.Status;
-import com.fintech.creditprocessing.domain.dto.LoanOrderDTO;
+import com.fintech.creditprocessing.domain.dto.LoanOrderForAddDTO;
+import com.fintech.creditprocessing.domain.dto.LoanOrderForDelDTO;
 
 public interface LoanOrderService {
 
-    String createCreditApplication(LoanOrderDTO loanOrderDTO);
+    String createCreditApplication(LoanOrderForAddDTO loanOrderDTO);
 
     Status getStatusOrder(String orderId);
 
-    void deleteOrder(LoanOrderDTO loanOrderDTO);
+    void deleteOrder(LoanOrderForDelDTO loanOrderDTO);
 }

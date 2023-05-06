@@ -4,7 +4,8 @@ package com.fintech.creditprocessing.service.impl;
 import com.fintech.creditprocessing.constant.ErrorCode;
 import com.fintech.creditprocessing.constant.Status;
 import com.fintech.creditprocessing.dao.LoanOrderDAO;
-import com.fintech.creditprocessing.domain.dto.LoanOrderDTO;
+import com.fintech.creditprocessing.domain.dto.LoanOrderForAddDTO;
+import com.fintech.creditprocessing.domain.dto.LoanOrderForDelDTO;
 import com.fintech.creditprocessing.domain.exception.CommonException;
 import com.fintech.creditprocessing.entity.LoanOrder;
 import com.fintech.creditprocessing.service.LoanOrderService;
@@ -25,7 +26,7 @@ public class LoanOrderServiceImpl implements LoanOrderService {
 
 
     @Override
-    public String createCreditApplication(LoanOrderDTO loanOrderDTO) {
+    public String createCreditApplication(LoanOrderForAddDTO loanOrderDTO) {
 
         List<LoanOrder> orders = loanOrderDAO.getLoanOrdersByUserId(loanOrderDTO.userId());
 
@@ -70,7 +71,7 @@ public class LoanOrderServiceImpl implements LoanOrderService {
     }
 
     @Override
-    public void deleteOrder(LoanOrderDTO loanOrderDTO) {
+    public void deleteOrder(LoanOrderForDelDTO loanOrderDTO) {
 
         Optional<Status> statusOptional = Optional.ofNullable(loanOrderDAO.getStatusById(loanOrderDTO.orderId()));
         if (statusOptional.isEmpty()) throw new CommonException(ErrorCode.ORDER_NOT_FOUND, "Заявка не найдена");

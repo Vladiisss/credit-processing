@@ -1,7 +1,8 @@
 package com.fintech.creditprocessing.controller;
 
 
-import com.fintech.creditprocessing.domain.dto.LoanOrderDTO;
+import com.fintech.creditprocessing.domain.dto.LoanOrderForAddDTO;
+import com.fintech.creditprocessing.domain.dto.LoanOrderForDelDTO;
 import com.fintech.creditprocessing.domain.response.Response;
 import com.fintech.creditprocessing.domain.response.SuccessResponse;
 import com.fintech.creditprocessing.service.LoanOrderService;
@@ -28,8 +29,8 @@ public class LoanServiceController {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<Response> addOrder(@RequestBody LoanOrderDTO loanOrderDTO) {
-        return ResponseEntity.ok(new SuccessResponse<>(loanOrderService.createCreditApplication(loanOrderDTO)));
+    public ResponseEntity<Response> addOrder(@RequestBody LoanOrderForAddDTO loanOrder) {
+        return ResponseEntity.ok(new SuccessResponse<>(loanOrderService.createCreditApplication(loanOrder)));
     }
 
     @GetMapping("/getStatusOrder")
@@ -38,8 +39,8 @@ public class LoanServiceController {
     }
 
     @DeleteMapping("/deleteOrder")
-    public ResponseEntity<?> deleteOrder(@RequestBody LoanOrderDTO loanOrderDTO) {
-        loanOrderService.deleteOrder(loanOrderDTO);
+    public ResponseEntity<?> deleteOrder(@RequestBody LoanOrderForDelDTO loanOrder) {
+        loanOrderService.deleteOrder(loanOrder);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

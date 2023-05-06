@@ -1,9 +1,7 @@
 package com.fintech.creditprocessing.domain.dto;
 
-public record LoanOrderDTO(
-
+public record LoanOrderForDelDTO(
         Long userId,
-        Long tariffId,
         String orderId
 ) {
 }
