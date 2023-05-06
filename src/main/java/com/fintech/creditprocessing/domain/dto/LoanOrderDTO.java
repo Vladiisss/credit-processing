@@ -1,4 +1,4 @@
-package com.fintech.creditprocessing.dto;
+package com.fintech.creditprocessing.domain.dto;
 
 public record LoanOrderDTO(
 

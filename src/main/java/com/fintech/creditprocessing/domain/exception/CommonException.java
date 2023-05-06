@@ -1,4 +1,4 @@
-package com.fintech.creditprocessing.exception;
+package com.fintech.creditprocessing.domain.exception;
 
 
 import com.fintech.creditprocessing.constant.ErrorCode;
