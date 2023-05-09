@@ -5,6 +5,9 @@ import com.fintech.creditprocessing.domain.dto.LoanOrderForAddDTO;
 import com.fintech.creditprocessing.domain.dto.LoanOrderForDelDTO;
 import com.fintech.creditprocessing.domain.response.Response;
 import com.fintech.creditprocessing.domain.response.SuccessResponse;
+import com.fintech.creditprocessing.domain.response.wrapper.OrderIdWrap;
+import com.fintech.creditprocessing.domain.response.wrapper.OrderStatusWrap;
+import com.fintech.creditprocessing.domain.response.wrapper.TariffWrap;
 import com.fintech.creditprocessing.service.LoanOrderService;
 import com.fintech.creditprocessing.service.TariffService;
 import lombok.RequiredArgsConstructor;
@@ -25,17 +28,18 @@ public class LoanServiceController {
 
     @GetMapping("/getTariffs")
     public ResponseEntity<Response> getTariffs() {
-        return ResponseEntity.ok(new SuccessResponse<>(tariffService.getAllTariffs()));
+        return ResponseEntity.ok(new SuccessResponse<>(new TariffWrap(tariffService.getAllTariffs())));
     }
 
     @PostMapping("/order")
     public ResponseEntity<Response> addOrder(@RequestBody LoanOrderForAddDTO loanOrder) {
-        return ResponseEntity.ok(new SuccessResponse<>(loanOrderService.createCreditApplication(loanOrder)));
+        return ResponseEntity.ok(new SuccessResponse<>(
+                new OrderIdWrap(loanOrderService.createCreditApplication(loanOrder))));
     }
 
     @GetMapping("/getStatusOrder")
     public ResponseEntity<Response> getStatusOrder(@RequestParam("orderId") String orderId) {
-        return ResponseEntity.ok(new SuccessResponse<>(loanOrderService.getStatusOrder(orderId)));
+        return ResponseEntity.ok(new SuccessResponse<>(new OrderStatusWrap(loanOrderService.getStatusOrder(orderId))));
     }
 
     @DeleteMapping("/deleteOrder")
