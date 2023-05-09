@@ -2,13 +2,14 @@ package com.fintech.creditprocessing.entity;
 
 
 import com.fintech.creditprocessing.constant.Status;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.sql.Timestamp;
 
 @Data
-@Accessors(chain = true)
+@Builder
 public class LoanOrder {
 
     private Long id;

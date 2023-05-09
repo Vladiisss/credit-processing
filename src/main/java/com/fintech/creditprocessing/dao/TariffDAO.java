@@ -13,6 +13,7 @@ import java.util.List;
 public class TariffDAO {
 
     private static final String SQL_SELECT_ALL = "SELECT * FROM tariff";
+    private static final String SQL_EXISTS_BY_ID = "SELECT EXISTS(SELECT * FROM tariff WHERE id = ?)";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -20,6 +21,10 @@ public class TariffDAO {
     public List<Tariff> getAllTariffs() {
 
         return jdbcTemplate.query(SQL_SELECT_ALL, new BeanPropertyRowMapper<>(Tariff.class));
+    }
 
+    public Boolean isTariffExists(Long tariffId) {
+
+        return jdbcTemplate.queryForObject(SQL_EXISTS_BY_ID, Boolean.class, tariffId);
     }
 }

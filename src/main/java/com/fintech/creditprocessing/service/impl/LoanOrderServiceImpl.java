@@ -4,6 +4,7 @@ package com.fintech.creditprocessing.service.impl;
 import com.fintech.creditprocessing.constant.ErrorCode;
 import com.fintech.creditprocessing.constant.Status;
 import com.fintech.creditprocessing.dao.LoanOrderDAO;
+import com.fintech.creditprocessing.dao.TariffDAO;
 import com.fintech.creditprocessing.domain.dto.LoanOrderForAddDTO;
 import com.fintech.creditprocessing.domain.dto.LoanOrderForDelDTO;
 import com.fintech.creditprocessing.domain.exception.CommonException;
@@ -23,10 +24,13 @@ import java.util.UUID;
 public class LoanOrderServiceImpl implements LoanOrderService {
 
     private final LoanOrderDAO loanOrderDAO;
-
+    private final TariffDAO tariffDAO;
 
     @Override
     public String createCreditApplication(LoanOrderForAddDTO loanOrderDTO) {
+
+        if (!tariffDAO.isTariffExists(loanOrderDTO.tariffId()))
+            throw new CommonException(ErrorCode.TARIFF_NOT_FOUND, "Тариф не найден");
 
         List<LoanOrder> orders = loanOrderDAO.getLoanOrdersByUserId(loanOrderDTO.userId());
 
@@ -37,7 +41,7 @@ public class LoanOrderServiceImpl implements LoanOrderService {
                     case IN_PROGRESS -> throw new CommonException(ErrorCode.LOAN_CONSIDERATION, "Заявка уже на рассмотрении");
                     case APPROVED -> throw new CommonException(ErrorCode.LOAN_ALREADY_APPROVED, "Заявка уже одобрена");
                     case REFUSED -> {
-                        if (order.getTimeUpdate().compareTo(new Timestamp(System.currentTimeMillis())) < 120000) {
+                        if (new Timestamp(System.currentTimeMillis()).getTime() - order.getTimeUpdate().getTime()  < 120000) {
                             throw new CommonException(ErrorCode.TRY_LATER, "Прошло менее 2 минут");
                         }
                     }
@@ -47,14 +51,15 @@ public class LoanOrderServiceImpl implements LoanOrderService {
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        LoanOrder loanOrder = new LoanOrder();
-        loanOrder.setOrderId(UUID.randomUUID().toString())
-                .setUserId(loanOrderDTO.userId())
-                .setTariffId(loanOrderDTO.tariffId())
-                .setCreditRating(0.1 + Math.random() * 0.8)
-                .setStatus(Status.IN_PROGRESS)
-                .setTimeInsert(timestamp)
-                .setTimeUpdate(timestamp);
+        LoanOrder loanOrder = LoanOrder.builder()
+                .orderId(UUID.randomUUID().toString())
+                .userId(loanOrderDTO.userId())
+                .tariffId(loanOrderDTO.tariffId())
+                .creditRating(0.1 + Math.random() * 0.8)
+                .status(Status.IN_PROGRESS)
+                .timeInsert(timestamp)
+                .timeUpdate(timestamp)
+                .build();
 
         loanOrderDAO.save(loanOrder);
 
